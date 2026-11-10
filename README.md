@@ -6,13 +6,75 @@ Diseñado para no "trabarse" el día de la carrera: la captura de lecturas corre
 
 ## Instalación
 
+### Requisitos
+- **Python 3.10 o superior** (3.11–3.13 probados). Comprobar con `python --version`.
+- **Git** (para descargar el proyecto).
+- Windows 10/11, Linux o macOS. No necesita internet para funcionar; solo para instalar.
+- *Opcional:* un lector UHF por red compatible con LLRP (p. ej. Impinj) para captura real.
+
+### 1. Descargar el proyecto
 ```bash
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"            # app + pruebas
-pip install -e ".[llrp]"           # opcional: lectores UHF por red (Impinj y compatibles, vía sllurp)
+git clone https://github.com/ANT-RX/Pacer_Time.git
+cd Pacer_Time
 ```
 
-Python 3.10+.
+### 2. Crear el entorno virtual e instalar
+
+**Windows (PowerShell):**
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e .
+```
+> Si PowerShell bloquea el script de activación: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, o use `cmd` y `.venv\Scripts\activate.bat`.
+
+**Linux / macOS:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -e .
+```
+
+Extras opcionales (se pueden combinar, p. ej. `pip install -e ".[dev,llrp]"`):
+
+| Extra | Para qué | Comando |
+|---|---|---|
+| `dev` | Correr las pruebas (`pytest`) | `pip install -e ".[dev]"` |
+| `llrp` | Lectores UHF por red (instala `sllurp`) | `pip install -e ".[llrp]"` |
+
+### 3. Verificar la instalación
+```bash
+pytest                  # solo si instaló el extra "dev"; debe terminar en "passed"
+pacer-sim seed --db demo.db --runners 100
+pacer-time demo.db      # abre la app con una carrera de demostración
+```
+Sin datos propios todavía, `pacer-time` a secas muestra una bienvenida con **Nuevo evento / Abrir evento / Probar con datos de demostración**.
+
+### Dónde se guardan los datos
+Cada evento es **un solo archivo `.db`** (por defecto en `~/PacerTime/`, o `C:\Users\<usuario>\PacerTime\` en Windows). Los respaldos automáticos van a una carpeta `<evento>.respaldos/` junto al archivo. Para pasar un evento a otra computadora basta copiar ese `.db` (con la app cerrada).
+
+### Linux: librerías de Qt
+Si al abrir la app aparece un error como `Could not load the Qt platform plugin "xcb"`, instale las dependencias del sistema:
+```bash
+sudo apt install libxcb-cursor0 libxkbcommon-x11-0 libegl1 libgl1
+```
+Para correr sin pantalla (servidores, pruebas): `QT_QPA_PLATFORM=offscreen pytest`.
+
+### Problemas frecuentes
+| Síntoma | Solución |
+|---|---|
+| `pacer-time` no se reconoce como comando | Active el entorno virtual (`.venv`) o use `python -m pacer_time.ui.app` |
+| `No matching distribution found for PySide6` | Python demasiado antiguo o de 32 bits: use Python 3.10+ de 64 bits |
+| `ModuleNotFoundError: sllurp` al usar un lector LLRP | `pip install -e ".[llrp]"` |
+| La captura "se queda en SIN SEÑAL" | El proceso de captura se cerró; en *Carrera en vivo* pulse **Iniciar captura** de nuevo (las lecturas ya guardadas no se pierden) |
+
+### Actualizar
+```bash
+git pull
+pip install -e .
+```
 
 ## Uso rápido
 
