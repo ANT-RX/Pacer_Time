@@ -4,6 +4,37 @@ Registro de participantes, cronometraje y resultados de carreras. **Todo local**
 
 Diseñado para no "trabarse" el día de la carrera: la captura de lecturas corre en un **proceso aparte** de la interfaz, las lecturas crudas **nunca se modifican** y los resultados siempre se **recalculan** a partir de ellas.
 
+## Así se ve
+
+Capturas generadas con datos de demostración (nombres y lecturas simulados).
+
+**Carrera en vivo** — cronómetro desde el disparo, lecturas en tiempo real, salud de cada lector y paso manual de respaldo. La captura corre en un proceso aparte de la ventana.
+
+![Carrera en vivo](docs/screenshots/3-carrera-en-vivo.png)
+
+**Resultados** — general, por género y por categoría, con tiempo de pistola, neto, ritmo y parciales; filtros y exportación a CSV/HTML.
+
+![Resultados](docs/screenshots/4-resultados.png)
+
+**Calidad y correcciones** — anomalías detectadas, lecturas del dorsal seleccionado e historial de correcciones (cada una con operador y motivo).
+
+![Calidad y correcciones](docs/screenshots/5-calidad.png)
+
+<details>
+<summary>Participantes y check-in</summary>
+
+**Participantes** — alta, edición, importación de CSV, estados y búsqueda.
+
+![Participantes](docs/screenshots/1-participantes.png)
+
+**Check-in** — búsqueda por dorsal, documento o chip; asignación de chip y entrega de kit.
+
+![Check-in](docs/screenshots/2-checkin.png)
+
+</details>
+
+Para regenerar las imágenes: `python scripts/make_screenshots.py docs/screenshots` (funciona sin pantalla).
+
 ## Instalación
 
 ### Requisitos
